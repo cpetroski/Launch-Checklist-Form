@@ -1,7 +1,7 @@
 // Write your JavaScript code here!
-window.addEventListener("load", async () => {
+window.addEventListener("load",  () => {
    let form = document.querySelector("form");
-   form.addEventListener("submit", function(event) {
+   form.addEventListener("submit", async function(event) {
       let pilotNameInput = document.querySelector("input[name=pilotName]");
       let copilotNameInput = document.querySelector("input[name=copilotName]");
       let fuelLevelInput = document.querySelector("input[name=fuelLevel]");
@@ -51,7 +51,29 @@ window.addEventListener("load", async () => {
          launchStatus.style.color = "green"
          faultyItems.style.visibility = "visible"
       }
+       
+      let missionTarget = document.getElementById("missionTarget");
+
+      try{
+         const res = await fetch(
+           'https://handlers.education.launchcode.org/static/planets.json' 
+         )
+         const data = await res.json();
          
+         missionTarget.innerHTML =
+         `<h2>Mission Destination</h2>
+            <ol>
+               <li>Name: ${data[0].name}</li>
+               <li>Diameter: ${data[0].diameter}</li>
+               <li>Star: ${data[0].star}</li>
+               <li>Distance from Earth: ${data[0].distance}</li>
+               <li>Number of Moons: ${data[0].moons}</li>
+            </ol>
+         <img src="${data[0].image}"></img>`
+
+      } catch (err) {
+         console.error(err);
+      }
       }
    )}
 )
